@@ -2,6 +2,7 @@
 .env
 .env.*
 !.env.production
+!.env.example
 
 # Python
 __pycache__/
@@ -56,11 +57,9 @@ backups/
 .DS_Store
 Thumbs.db
 
-# Discord
-*.png
-*.jpg
-*.gif
-
-# Reports
+# Reports (keep only README)
 *.md
 !README.md
+!CHANGELOG.md
+!RELEASE_NOTES.md
+!LICENSE

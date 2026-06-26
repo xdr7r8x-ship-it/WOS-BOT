@@ -1,14 +1,18 @@
-# Whiteout Survival Gift Code Bot
+# WOS-BOT - Whiteout Survival Discord Bot
 
-A Discord bot for automated gift code redemption in Whiteout Survival.
+A powerful Discord bot for Whiteout Survival game management with a single `/wos` command interface.
 
 ## Features
 
-- **Auto-detection**: Automatically detects gift codes in configured channels
-- **Auto-redeem**: Redeems codes for all registered players
-- **User Registration**: Players can register their in-game FID
-- **Slash Commands**: `/setup`, `/redeem`, `/status`, `/players`
-- **SQLite Storage**: All data persisted locally
+- **Single Command**: `/wos` - Access all features through one unified panel
+- **Gift Codes**: Auto-detect and redeem codes for all registered players
+- **Player ID**: Self-service player ID management
+- **Alliance**: Manage alliance information and sync
+- **Reminders**: Create event reminders with game/real time support
+- **Security**: Built-in abuse guard, secret scanner, input validation
+- **I18N**: Arabic and English support
+- **RBAC**: Role-based access control (Owner/Admin/Supervisor/Member)
+- **SQLite**: All data persisted locally
 
 ## Setup
 
@@ -22,9 +26,11 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-3. Add your Discord bot token to `.env`:
+3. Configure `.env`:
 ```
 DISCORD_BOT_TOKEN=your_bot_token_here
+WOS_API_KEY=your_wos_api_key_here
+OWNER_ID=your_discord_user_id
 ```
 
 4. Run the bot:
@@ -34,45 +40,53 @@ python main.py
 
 ## Commands
 
-- `/setup` - Configure register and codes channels
-- `/redeem <code>` - Manually redeem a gift code
-- `/status <code>` - Check redemption status
-- `/players` - List all registered players
+### Main Command
+- `/wos` - Open the main control panel (single command for everything)
 
-## Channel Setup
+### Admin Commands
+- `/wos` - Panel with all features accessible based on role
 
-1. Use `/setup` command
-2. Select the **Register Channel** - where players send their FID to register
-3. Select the **Codes Channel** - where gift codes will be auto-detected
-4. Click **Save Settings**
+## Roles & Permissions
 
-## Player Registration
-
-In the register channel, send your game FID:
-```
-12345678
-```
-Or with nickname:
-```
-12345678 MyNickname
-```
+| Role | Access |
+|------|--------|
+| Owner | Full access to all features |
+| Admin | Most features + user management |
+| Supervisor | Basic features + monitoring |
+| Member | Self-service features only |
 
 ## Project Structure
 
 ```
 WOS-BOT/
-├── main.py                 # Bot entry point
-├── database.py             # SQLite database operations
-├── requirements.txt        # Dependencies
-├── .env.example           # Environment template
-├── db/                    # SQLite database files (created at runtime)
-└── src/
-    ├── api/
-    │   └── redeem.py      # Whiteout API client
-    ├── utils/
-    │   ├── sign.py        # Sign generation utilities
-    │   ├── captcha.py     # Captcha solver (mock if no API key)
-    │   └── request.py     # HTTP request utilities
-    └── services/
-        └── redeem_service.py  # Redemption service layer
+├── main.py                      # Bot entry point
+├── database.py                   # SQLite database operations
+├── requirements.txt             # Dependencies
+├── .env.example                 # Environment template
+├── src/
+│   ├── api/
+│   │   ├── alliance_client.py   # Alliance API client
+│   │   └── redeem.py            # Whiteout API client
+│   ├── features/
+│   │   └── */feature_manifest.py # Feature definitions
+│   ├── services/
+│   │   ├── feature_registry_service.py  # Feature registry
+│   │   └── redeem_service.py            # Redemption service
+│   ├── ui/
+│   │   ├── wos_panel.py         # Main /wos panel
+│   │   └── views/               # UI components
+│   └── utils/
+│       ├── rbac.py              # Role-based access control
+│       └── i18n/                 # Translations
+└── tests/                       # Unit tests
 ```
+
+## Requirements
+
+- Python 3.10+
+- Discord.py 2.0+
+- SQLite3
+
+## License
+
+MIT

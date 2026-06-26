@@ -1,5 +1,6 @@
 import asyncio
 import hashlib
+import os
 import random
 import time
 from typing import Optional
@@ -13,11 +14,16 @@ class WhiteoutAPI:
     BASE_URL = "https://api.whiteout.io"
     APP_VERSION = "3.2.2"
     BUNDLE_ID = "com.babeltime.pap.global"
-    API_KEY = "s3cr3tk3y"
     DEVICE_ID = "auto_" + "".join(random.choices("0123456789abcdef", k=16))
 
     def __init__(self):
         self._session: Optional[aiohttp.ClientSession] = None
+        self.api_key = os.getenv("WOS_API_KEY", "")
+
+    def _get_api_key(self) -> str:
+        if not self.api_key:
+            raise ValueError("WOS_API_KEY environment variable is required")
+        return self.api_key
 
     async def _get_session(self) -> aiohttp.ClientSession:
         if self._session is None or self._session.closed:
@@ -28,7 +34,7 @@ class WhiteoutAPI:
     def _generate_sign(self, params: dict) -> str:
         sorted_keys = sorted(params.keys())
         sign_str = "&".join(f"{k}={params[k]}" for k in sorted_keys)
-        sign_str += self.API_KEY
+        sign_str += self._get_api_key()
         return hashlib.md5(sign_str.encode()).hexdigest()
 
     def _get_common_params(self) -> dict:
