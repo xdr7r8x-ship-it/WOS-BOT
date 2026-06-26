@@ -1,6 +1,59 @@
 # VPS Deployment Guide
 
-## Prerequisites
+## Option A: Docker (Recommended for Beginners)
+
+### Prerequisites
+- Docker installed
+- Docker Compose installed
+
+### Quick Start
+
+```bash
+# 1. Clone repository
+git clone https://github.com/xdr7r8x-ship-it/WOS-BOT.git
+cd WOS-BOT
+
+# 2. Copy and edit environment
+cp .env.example .env
+nano .env  # Fill in your secrets
+
+# 3. Start with Cloudflare Tunnel
+docker compose up -d
+
+# 4. Get your tunnel URL
+docker logs -f wos-tunnel
+# Look for: "Your quick Tunnel has been created at: https://xxxx.trycloudflare.com"
+
+# 5. Update .env with tunnel URL
+# Edit .env and replace YOUR_TUNNEL_OR_DOMAIN with the URL above
+
+# 6. Restart
+docker compose down
+docker compose up -d
+```
+
+### Docker Services
+- `wos-bot` - Main bot and dashboard
+- `cloudflared` - Cloudflare tunnel for public access
+
+### Manage Docker
+```bash
+# View logs
+docker compose logs -f
+
+# Stop
+docker compose down
+
+# Update and restart
+git pull
+docker compose up -d --build
+```
+
+---
+
+## Option B: Manual VPS Deployment
+
+### Prerequisites
 
 - Ubuntu/Debian VPS with sudo access
 - Git installed

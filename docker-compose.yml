@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  wos-bot:
+    build: .
+    container_name: wos-bot
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./db:/app/db
+      - ./.env:/app/.env:ro
+    env_file:
+      - .env
+    environment:
+      - WEB_DASHBOARD_HOST=0.0.0.0
+      - WEB_DASHBOARD_PORT=8080
+    networks:
+      - wos-network
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: wos-tunnel
+    restart: unless-stopped
+    command: tunnel --url http://wos-bot:8080
+    networks:
+      - wos-network
+    depends_on:
+      - wos-bot
+
+networks:
+  wos-network:
+    driver: bridge
