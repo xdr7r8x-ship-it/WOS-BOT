@@ -44,19 +44,17 @@ async def submit_gift_code(
     
     log_web_action(request, "GIFT_CODE_SUBMIT", code[:8] + "***", risk_level="MEDIUM")
     
-    from src.services.redeem_service import RedeemService
-    from database import save_gift_code
+    from database import generate_code_hash, add_gift_code
+    from src.services.queue_service import queue_service
     
     guild_id = "web_dashboard"
-    code_hash = f"web_{hash(code) % 1000000}"
+    code_hash = generate_code_hash(guild_id, code)
     
-    save_gift_code(guild_id, code_hash, code)
-    
-    service = RedeemService()
+    add_gift_code(guild_id, code, code_hash)
     
     try:
-        await service.process_code(guild_id, code)
-        return {"status": "success", "message": "Code submitted for processing", "code_hash": code_hash}
+        queue_service.enqueue(guild_id, code_hash)
+        return {"status": "success", "message": "Code queued for processing", "code_hash": code_hash}
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
