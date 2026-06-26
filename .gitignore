@@ -1,0 +1,66 @@
+# Environment
+.env
+.env.*
+!.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Database
+*.sqlite3
+*.db
+
+# Logs
+logs/
+*.log
+
+# Backups
+backups/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Discord
+*.png
+*.jpg
+*.gif
+
+# Reports
+*.md
+!README.md

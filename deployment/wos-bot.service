@@ -1,0 +1,26 @@
+[Unit]
+Description=WOS-BOT Discord Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=wosbot
+Group=wosbot
+WorkingDirectory=/opt/wos-bot
+EnvironmentFile=/opt/wos-bot/.env
+ExecStart=/opt/wos-bot/.venv/bin/python /opt/wos-bot/main.py
+
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+KillSignal=SIGINT
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/wos-bot/db /opt/wos-bot/logs /opt/wos-bot/backups /opt/wos-bot/releases /opt/wos-bot/.venv
+
+[Install]
+WantedBy=multi-user.target
