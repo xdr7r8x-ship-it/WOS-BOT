@@ -1,7 +1,5 @@
 # FINAL REPORT
 
-## DECISION: READY_FOR_OWNER_SECRETS
-
 ## Status Summary
 
 | Component | Status |
@@ -10,30 +8,38 @@
 | Pytest | ✅ 269 passed, 0 failed |
 | Frontend build | ✅ PASS |
 | Frontend lint | ✅ PASS |
-| Bot ready | ✅ Ready |
-| Dashboard ready | ✅ Ready |
 
-## Secrets Generated
+## Configuration Status
 
 ```
-PRIVATE_WOS_API_KEY_CREATED=true
-KEY_LOCATION=.env only
-WOS_API_KEY_VALUE_PRINTED=false
-WEB_SESSION_SECRET=auto_generated_on_vps
+ENV_CONFIGURED=true
+WEB_SESSION_SECRET_CREATED=true
+INTERNAL_WOS_API_KEY_CREATED=true
+DISCORD_OAUTH_CONFIGURED=false
+DOMAIN_CONFIGURED=false
+BOT_SERVICE=pending_vps
+DASHBOARD_SERVICE=pending_vps
+NGINX=pending_vps
+TESTS=pass
 ```
+
+## Secrets Status
+
+| Secret | Status | Location |
+|--------|--------|----------|
+| DISCORD_BOT_TOKEN | ✅ Configured | .env |
+| BOT_OWNER_IDS | ✅ Configured | .env |
+| WEB_SESSION_SECRET | ✅ Auto-generated | .env |
+| WOS_API_KEY | ✅ Auto-generated | .env |
+| DISCORD_OAUTH_CLIENT_ID | ⏳ Owner Required | Discord Developer Portal |
+| DISCORD_OAUTH_CLIENT_SECRET | ⏳ Owner Required | Discord Developer Portal |
 
 ## System Configuration
 
 ```
 GIFT_SYSTEM_STATUS=ENABLED_INTERNAL_QUEUE
-OAUTH_STATUS=WAITING_OWNER_CREDENTIALS
-```
-
-## Missing Only: OAuth Credentials
-
-```
-1. DISCORD_OAUTH_CLIENT_ID=required_from_owner
-2. DISCORD_OAUTH_CLIENT_SECRET=required_from_owner
+OAUTH_STATUS=OAUTH_WAITING_DOMAIN
+WEB_COOKIE_SECURE=false
 ```
 
 ## What's Working
@@ -46,19 +52,39 @@ OAUTH_STATUS=WAITING_OWNER_CREDENTIALS
 - ✅ Gift codes with internal queue
 - ✅ Web Dashboard backend
 - ✅ Web Dashboard frontend
+- ✅ All tests pass
 
-## VPS Deployment Ready
+## Owner Action Required
 
-Files prepared:
-- deployment/deploy.sh
-- deployment/dashboard_deploy.sh
-- deployment/wos-bot.service
-- deployment/wos-dashboard.service
-- deployment/nginx-wos-dashboard.conf
+### 1. Discord OAuth (Required for Web Dashboard Login)
 
-## Deploy on VPS
+1. Go to https://discord.com/developers/applications
+2. Open your bot application
+3. Go to OAuth2 settings
+4. Copy Client ID and Client Secret
+5. Add to .env:
+   ```
+   DISCORD_OAUTH_CLIENT_ID=<your_client_id>
+   DISCORD_OAUTH_CLIENT_SECRET=<your_client_secret>
+   ```
+
+### 2. Domain (Optional for HTTPS)
+
+If you have a domain:
+1. Update in .env:
+   ```
+   WEB_PUBLIC_URL=https://YOUR_DOMAIN
+   WEB_COOKIE_SECURE=true
+   WEB_CORS_ORIGINS=https://YOUR_DOMAIN
+   DISCORD_OAUTH_REDIRECT_URI=https://YOUR_DOMAIN/api/v1/auth/discord/callback
+   ```
+2. Configure SSL certificate
+3. Update nginx config
+
+## VPS Deployment (Run on VPS)
 
 ```bash
+cd /opt/wos-bot
 sudo bash deployment/deploy.sh
 sudo bash deployment/dashboard_deploy.sh
 sudo systemctl daemon-reload
@@ -67,8 +93,13 @@ sudo systemctl restart wos-bot wos-dashboard
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
-## Owner Action Required
+## Runtime Testing
 
-Provide Discord OAuth credentials to enable Web Dashboard login.
+```bash
+sudo systemctl status wos-bot --no-pager
+sudo systemctl status wos-dashboard --no-pager
+journalctl -u wos-bot -n 50 --no-pager
+journalctl -u wos-dashboard -n 50 --no-pager
+```
 
-## FINAL_STATUS=READY_FOR_VPS_DEPLOYMENT
+## FINAL_STATUS=OAUTH_WAITING_DOMAIN
