@@ -150,7 +150,7 @@ async def get_me(request: Request):
 async def get_user_guilds(request: Request):
     require_auth(request)
     
-    from database import get_owner_ids, get_admin_users
+    from database import get_owner_ids, get_admin_guild_ids
     
     user_id = request.state.user_id
     role = request.state.role
@@ -159,11 +159,7 @@ async def get_user_guilds(request: Request):
         from database import get_all_guild_ids
         guild_ids = get_all_guild_ids()
     else:
-        guild_ids = []
-        for gid in get_admin_users.keys():
-            admins = get_admin_users(gid)
-            if user_id in admins:
-                guild_ids.append(gid)
+        guild_ids = get_admin_guild_ids(user_id)
     
     return {"guilds": guild_ids}
 
@@ -182,9 +178,9 @@ async def set_user_guild(request: Request, body: dict = Body(...)):
     if role == "OWNER":
         pass
     else:
-        from database import get_admin_users
-        admins = get_admin_users(guild_id)
-        if user_id not in admins:
+        from database import get_admin_user_ids
+        admin_ids = get_admin_user_ids(guild_id)
+        if user_id not in admin_ids:
             raise HTTPException(status_code=403, detail="You do not have permission for this guild")
     
     session_manager = get_session_manager()

@@ -716,7 +716,7 @@ def get_redemptions_by_code(guild_id: str, code_hash: str) -> list:
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute(
-            """SELECT * FROM redemptions 
+            """SELECT * FROM redemption_history 
                WHERE guild_id = ? AND code_hash = ?
                ORDER BY created_at DESC""",
             (guild_id, code_hash)
@@ -747,22 +747,36 @@ def get_code_stats(guild_id: str = None) -> dict:
     with get_db() as conn:
         cursor = conn.cursor()
         
-        base_where = f"WHERE guild_id = '{guild_id}'" if guild_id else ""
-        
-        cursor.execute(f"SELECT COUNT(*) FROM gift_codes {base_where}")
-        total = cursor.fetchone()[0]
-        
-        cursor.execute(f"SELECT COUNT(*) FROM gift_codes {base_where} AND status = 'COMPLETED'")
-        completed = cursor.fetchone()[0]
-        
-        cursor.execute(f"SELECT COUNT(*) FROM gift_codes {base_where} AND status = 'FAILED'")
-        failed = cursor.fetchone()[0]
-        
-        cursor.execute(f"SELECT COUNT(*) FROM gift_codes {base_where} AND status IN ('NEW', 'QUEUED', 'PROCESSING')")
-        processing = cursor.fetchone()[0]
-        
-        cursor.execute(f"SELECT COUNT(*) FROM redemptions {base_where}")
-        redemptions = cursor.fetchone()[0]
+        if guild_id:
+            cursor.execute("SELECT COUNT(*) FROM gift_codes WHERE guild_id = ?", (guild_id,))
+            total = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM gift_codes WHERE guild_id = ? AND status = 'COMPLETED'", (guild_id,))
+            completed = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM gift_codes WHERE guild_id = ? AND status = 'FAILED'", (guild_id,))
+            failed = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM gift_codes WHERE guild_id = ? AND status IN ('NEW', 'QUEUED', 'PROCESSING')", (guild_id,))
+            processing = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM redemption_history WHERE guild_id = ?", (guild_id,))
+            redemptions = cursor.fetchone()[0]
+        else:
+            cursor.execute("SELECT COUNT(*) FROM gift_codes")
+            total = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM gift_codes WHERE status = 'COMPLETED'")
+            completed = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM gift_codes WHERE status = 'FAILED'")
+            failed = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM gift_codes WHERE status IN ('NEW', 'QUEUED', 'PROCESSING')")
+            processing = cursor.fetchone()[0]
+            
+            cursor.execute("SELECT COUNT(*) FROM redemption_history")
+            redemptions = cursor.fetchone()[0]
         
         return {
             "total": total,
@@ -1821,6 +1835,26 @@ def get_admins_by_guild(guild_id: str) -> list:
             (guild_id,)
         )
         return [dict(row) for row in cursor.fetchall()]
+
+
+def get_admin_user_ids(guild_id: str) -> list:
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT user_id FROM admin_users WHERE guild_id = ? AND status = 'ACTIVE'",
+            (guild_id,)
+        )
+        return [row['user_id'] for row in cursor.fetchall()]
+
+
+def get_admin_guild_ids(user_id: str) -> list:
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT guild_id FROM admin_users WHERE user_id = ? AND status = 'ACTIVE'",
+            (user_id,)
+        )
+        return [row['guild_id'] for row in cursor.fetchall()]
 
 
 def get_supervisors_by_guild(guild_id: str) -> list:
