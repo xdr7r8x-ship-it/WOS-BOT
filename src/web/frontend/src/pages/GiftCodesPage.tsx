@@ -19,7 +19,7 @@ export default function GiftCodesPage() {
     },
   });
 
-  const handleRedeem = (e: React.FormEvent) => {
+  const handleRedeem = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (codeInput.trim()) {
       redeemMutation.mutate(codeInput.trim());

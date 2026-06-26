@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Request, Body
 from typing import List, Optional
 from datetime import datetime
 
@@ -32,18 +32,33 @@ async def list_gift_codes(
 @router.post("/redeem")
 async def submit_gift_code(
     request: Request,
-    code: str,
-    background_tasks: BackgroundTasks
+    body: dict = Body(...),
+    background_tasks=None
 ):
     require_auth(request)
     require_permission(request, "WEB_GIFT_CODES_MANAGE")
     
+    code = body.get("code", "")
+    if not code:
+        raise HTTPException(status_code=400, detail="Code is required")
+    
     log_web_action(request, "GIFT_CODE_SUBMIT", code[:8] + "***", risk_level="MEDIUM")
     
-    from src.services.redeem_service import submit_code
-    result = await submit_code(code)
+    from src.services.redeem_service import RedeemService
+    from database import save_gift_code
     
-    return result
+    guild_id = "web_dashboard"
+    code_hash = f"web_{hash(code) % 1000000}"
+    
+    save_gift_code(guild_id, code_hash, code)
+    
+    service = RedeemService()
+    
+    try:
+        await service.process_code(guild_id, code)
+        return {"status": "success", "message": "Code submitted for processing", "code_hash": code_hash}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
 
 @router.get("/{code_hash}/status")

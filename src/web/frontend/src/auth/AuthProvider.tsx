@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { api } from '../api/client';
 
 interface User {
@@ -50,10 +50,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const hasPermission = (permission: string): boolean => {
+  const hasPermission = (_permission: string): boolean => {
     if (!user) return false;
     if (user.role === 'OWNER') return true;
-    return user.permissions.includes(permission);
+    return user.permissions.includes(_permission);
   };
 
   return (
