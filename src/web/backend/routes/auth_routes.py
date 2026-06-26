@@ -1,11 +1,12 @@
 import httpx
 import secrets
-from fastapi import APIRouter, HTTPException, Response, Request, Depends
+from fastapi import APIRouter, HTTPException, Response, Request, Depends, Body
 from fastapi.responses import RedirectResponse
-from typing import Optional
+from typing import Optional, List
 from ..config import config
 from ..session import get_session_manager
 from ..rbac import has_permission
+from ..dependencies import require_auth
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 
@@ -35,7 +36,7 @@ async def discord_login():
         "client_id": config.DISCORD_OAUTH_CLIENT_ID,
         "redirect_uri": config.DISCORD_OAUTH_REDIRECT_URI,
         "response_type": "code",
-        "scope": "identify",
+        "scope": "identify guilds",
         "state": state,
     }
     
@@ -142,4 +143,69 @@ async def get_me(request: Request):
         "role": session["role_level"],
         "permissions": permissions,
         "guild_id": session.get("guild_id"),
+    }
+
+
+@router.get("/guilds")
+async def get_user_guilds(request: Request):
+    require_auth(request)
+    
+    from database import get_owner_ids, get_admin_users
+    
+    user_id = request.state.user_id
+    role = request.state.role
+    
+    if role == "OWNER":
+        from database import get_all_guild_ids
+        guild_ids = get_all_guild_ids()
+    else:
+        guild_ids = []
+        for gid in get_admin_users.keys():
+            admins = get_admin_users(gid)
+            if user_id in admins:
+                guild_ids.append(gid)
+    
+    return {"guilds": guild_ids}
+
+
+@router.put("/guild")
+async def set_user_guild(request: Request, body: dict = Body(...)):
+    require_auth(request)
+    
+    guild_id = body.get("guild_id")
+    if not guild_id:
+        raise HTTPException(status_code=400, detail="guild_id is required")
+    
+    user_id = request.state.user_id
+    role = request.state.role
+    
+    if role == "OWNER":
+        pass
+    else:
+        from database import get_admin_users
+        admins = get_admin_users(guild_id)
+        if user_id not in admins:
+            raise HTTPException(status_code=403, detail="You do not have permission for this guild")
+    
+    session_manager = get_session_manager()
+    session_id = request.cookies.get(config.WEB_COOKIE_NAME)
+    session_hash = session_id[:16] if session_id else None
+    
+    if session_hash:
+        with session_manager._get_connection() as conn:
+            conn.execute(
+                "UPDATE web_sessions SET guild_id = ? WHERE session_id_hash = ?",
+                (guild_id, session_hash)
+            )
+            conn.commit()
+    
+    from ..rbac import get_role_permissions
+    permissions = list(get_role_permissions(role))
+    
+    return {
+        "success": True,
+        "guild_id": guild_id,
+        "user_id": user_id,
+        "role": role,
+        "permissions": permissions,
     }

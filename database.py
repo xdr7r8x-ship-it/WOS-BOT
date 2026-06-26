@@ -694,6 +694,85 @@ def get_gift_codes_to_delete(guild_id: str) -> list:
         return [row[0] for row in cursor.fetchall()]
 
 
+def get_gift_codes(guild_id: str = None, limit: int = 50, offset: int = 0) -> list:
+    with get_db() as conn:
+        cursor = conn.cursor()
+        if guild_id:
+            cursor.execute(
+                """SELECT * FROM gift_codes WHERE guild_id = ? 
+                   ORDER BY created_at DESC LIMIT ? OFFSET ?""",
+                (guild_id, limit, offset)
+            )
+        else:
+            cursor.execute(
+                """SELECT * FROM gift_codes 
+                   ORDER BY created_at DESC LIMIT ? OFFSET ?""",
+                (limit, offset)
+            )
+        return [dict(row) for row in cursor.fetchall()]
+
+
+def get_redemptions_by_code(guild_id: str, code_hash: str) -> list:
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            """SELECT * FROM redemptions 
+               WHERE guild_id = ? AND code_hash = ?
+               ORDER BY created_at DESC""",
+            (guild_id, code_hash)
+        )
+        return [dict(row) for row in cursor.fetchall()]
+
+
+def get_queue(guild_id: str = None) -> list:
+    with get_db() as conn:
+        cursor = conn.cursor()
+        if guild_id:
+            cursor.execute(
+                """SELECT * FROM gift_codes 
+                   WHERE guild_id = ? AND status IN ('NEW', 'QUEUED', 'PROCESSING')
+                   ORDER BY created_at ASC""",
+                (guild_id,)
+            )
+        else:
+            cursor.execute(
+                """SELECT * FROM gift_codes 
+                   WHERE status IN ('NEW', 'QUEUED', 'PROCESSING')
+                   ORDER BY created_at ASC"""
+            )
+        return [dict(row) for row in cursor.fetchall()]
+
+
+def get_code_stats(guild_id: str = None) -> dict:
+    with get_db() as conn:
+        cursor = conn.cursor()
+        
+        base_where = f"WHERE guild_id = '{guild_id}'" if guild_id else ""
+        
+        cursor.execute(f"SELECT COUNT(*) FROM gift_codes {base_where}")
+        total = cursor.fetchone()[0]
+        
+        cursor.execute(f"SELECT COUNT(*) FROM gift_codes {base_where} AND status = 'COMPLETED'")
+        completed = cursor.fetchone()[0]
+        
+        cursor.execute(f"SELECT COUNT(*) FROM gift_codes {base_where} AND status = 'FAILED'")
+        failed = cursor.fetchone()[0]
+        
+        cursor.execute(f"SELECT COUNT(*) FROM gift_codes {base_where} AND status IN ('NEW', 'QUEUED', 'PROCESSING')")
+        processing = cursor.fetchone()[0]
+        
+        cursor.execute(f"SELECT COUNT(*) FROM redemptions {base_where}")
+        redemptions = cursor.fetchone()[0]
+        
+        return {
+            "total": total,
+            "completed": completed,
+            "failed": failed,
+            "processing": processing,
+            "redemptions": redemptions,
+        }
+
+
 def init_autopilot_tables():
     with get_db() as conn:
         cursor = conn.cursor()

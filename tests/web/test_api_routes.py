@@ -16,6 +16,38 @@ class TestGiftCodeRoutes:
             content = f.read()
             assert 'router.get' in content or '@router.get' in content
 
+    def test_no_hardcoded_guild_id_in_redeem(self):
+        with open("src/web/backend/routes/gift_code_routes.py") as f:
+            content = f.read()
+        assert 'guild_id = "web_dashboard"' not in content, "Should not use hardcoded guild_id"
+        assert "guild_id = request.state.guild_id" in content, "Should use session guild_id"
+
+    def test_redeem_uses_generate_code_hash(self):
+        with open("src/web/backend/routes/gift_code_routes.py") as f:
+            content = f.read()
+        assert "generate_code_hash(guild_id, code)" in content
+
+    def test_redeem_uses_add_gift_code(self):
+        with open("src/web/backend/routes/gift_code_routes.py") as f:
+            content = f.read()
+        assert "add_gift_code(guild_id, code, code_hash)" in content
+
+    def test_redeem_uses_queue_service(self):
+        with open("src/web/backend/routes/gift_code_routes.py") as f:
+            content = f.read()
+        assert "queue_service.enqueue(guild_id, code_hash)" in content
+
+    def test_redeem_requires_guild_id(self):
+        with open("src/web/backend/routes/gift_code_routes.py") as f:
+            content = f.read()
+        assert 'request.state.guild_id' in content
+        assert 'No guild selected' in content
+
+    def test_redeem_checks_code_exists(self):
+        with open("src/web/backend/routes/gift_code_routes.py") as f:
+            content = f.read()
+        assert 'status == "EXISTS"' in content or "status == 'EXISTS'" in content
+
 
 class TestPlayerRoutes:
     def test_player_routes_module_exists(self):

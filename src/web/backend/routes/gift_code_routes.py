@@ -17,8 +17,12 @@ async def list_gift_codes(
     require_auth(request)
     require_permission(request, "WEB_GIFT_CODES_VIEW")
     
+    guild_id = request.state.guild_id
+    if not guild_id:
+        raise HTTPException(status_code=400, detail="No guild selected. Please select a server first.")
+    
     from database import get_gift_codes
-    codes = get_gift_codes(limit=limit, offset=offset)
+    codes = get_gift_codes(guild_id=guild_id, limit=limit, offset=offset)
     
     if status:
         codes = [c for c in codes if c.get("status") == status]
@@ -38,6 +42,10 @@ async def submit_gift_code(
     require_auth(request)
     require_permission(request, "WEB_GIFT_CODES_MANAGE")
     
+    guild_id = request.state.guild_id
+    if not guild_id:
+        raise HTTPException(status_code=400, detail="No guild selected. Please select a server first.")
+    
     code = body.get("code", "")
     if not code:
         raise HTTPException(status_code=400, detail="Code is required")
@@ -47,16 +55,24 @@ async def submit_gift_code(
     from database import generate_code_hash, add_gift_code
     from src.services.queue_service import queue_service
     
-    guild_id = "web_dashboard"
     code_hash = generate_code_hash(guild_id, code)
+    created, status = add_gift_code(guild_id, code, code_hash)
     
-    add_gift_code(guild_id, code, code_hash)
+    if not created and status == "EXISTS":
+        return {
+            "status": "exists",
+            "message": "Code already exists or was already processed",
+            "code_hash": code_hash
+        }
     
-    try:
-        queue_service.enqueue(guild_id, code_hash)
-        return {"status": "success", "message": "Code queued for processing", "code_hash": code_hash}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+    queue_service.enqueue(guild_id, code_hash)
+    
+    return {
+        "status": "success",
+        "message": "Code queued for processing",
+        "guild_id": guild_id,
+        "code_hash": code_hash
+    }
 
 
 @router.get("/{code_hash}/status")
@@ -64,13 +80,17 @@ async def get_code_status(request: Request, code_hash: str):
     require_auth(request)
     require_permission(request, "WEB_GIFT_CODES_VIEW")
     
+    guild_id = request.state.guild_id
+    if not guild_id:
+        raise HTTPException(status_code=400, detail="No guild selected. Please select a server first.")
+    
     from database import get_code_by_hash, get_redemptions_by_code
     
-    code = get_code_by_hash(code_hash)
+    code = get_code_by_hash(guild_id, code_hash)
     if not code:
         raise HTTPException(status_code=404, detail="Code not found")
     
-    redemptions = get_redemptions_by_code(code_hash)
+    redemptions = get_redemptions_by_code(guild_id, code_hash)
     
     return {
         "code": {
@@ -87,8 +107,12 @@ async def get_queue(request: Request):
     require_auth(request)
     require_permission(request, "WEB_GIFT_CODES_VIEW")
     
+    guild_id = request.state.guild_id
+    if not guild_id:
+        raise HTTPException(status_code=400, detail="No guild selected. Please select a server first.")
+    
     from database import get_queue
-    queue = get_queue()
+    queue = get_queue(guild_id=guild_id)
     
     return {"queue": queue}
 
@@ -98,7 +122,11 @@ async def get_stats(request: Request):
     require_auth(request)
     require_permission(request, "WEB_GIFT_CODES_VIEW")
     
+    guild_id = request.state.guild_id
+    if not guild_id:
+        raise HTTPException(status_code=400, detail="No guild selected. Please select a server first.")
+    
     from database import get_code_stats
-    stats = get_code_stats()
+    stats = get_code_stats(guild_id=guild_id)
     
     return stats
