@@ -1,0 +1,228 @@
+{
+  "app": {
+    "title": "WOS-BOT لوحة التحكم",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ"
+  },
+  "auth": {
+    "login": "تسجيل الدخول عبر Discord",
+    "logout": "تسجيل الخروج",
+    "welcome": "مرحباً",
+    "accessDenied": "غير مصرح بالوصول"
+  },
+  "nav": {
+    "overview": "نظرة عامة",
+    "giftCodes": "أكواد الهدايا",
+    "players": "اللاعبون",
+    "playerPanel": "لوحة اللاعب",
+    "alliances": "التحالفات",
+    "allianceApi": "API التحالف",
+    "reminders": "التذكيرات",
+    "timeSettings": "إعدادات الوقت",
+    "content": "المحتوى",
+    "admins": "المدراء",
+    "security": "الأمان",
+    "system": "النظام",
+    "backups": "النسخ الاحتياطية",
+    "updates": "التحديثات",
+    "auditLogs": "سجلات التدقيق",
+    "settings": "الإعدادات"
+  },
+  "overview": {
+    "title": "نظرة عامة",
+    "botStatus": "حالة البوت",
+    "online": "متصل",
+    "offline": "غير متصل",
+    "uptime": "وقت التشغيل",
+    "playersCount": "عدد اللاعبين",
+    "activePlayers": "اللاعبون النشطون",
+    "giftCodesProcessed": "الأكواد المعالجة",
+    "queueSize": "حجم الطابور",
+    "activeAlliances": "التحالفات النشطة",
+    "upcomingReminders": "التذكيرات القادمة",
+    "securityStatus": "حالة الأمان",
+    "databaseSize": "حجم قاعدة البيانات",
+    "latestAudit": "آخر الأحداث"
+  },
+  "giftCodes": {
+    "title": "أكواد الهدايا",
+    "submitCode": "إرسال كود",
+    "code": "الكود",
+    "status": "الحالة",
+    "pending": "قيد الانتظار",
+    "processing": "جاري المعالجة",
+    "completed": "مكتمل",
+    "failed": "فشل",
+    "queue": "الطابور",
+    "processed": "المعالجة",
+    "success": "نجاح",
+    "retry": "إعادة المحاولة",
+    "redeem": "استرداد"
+  },
+  "players": {
+    "title": "اللاعبون",
+    "playerId": "معرف اللاعب",
+    "nickname": "الاسم المستعار",
+    "status": "الحالة",
+    "active": "نشط",
+    "disabled": "معطل",
+    "search": "بحث...",
+    "disable": "تعطيل",
+    "enable": "تفعيل",
+    "stats": "الإحصائيات"
+  },
+  "playerPanel": {
+    "title": "لوحة اللاعب",
+    "status": "الحالة",
+    "enabled": "مفعل",
+    "disabled": "معطل",
+    "registerChannel": "قناة التسجيل",
+    "registeredCount": "عدد المسجلين",
+    "refresh": "تحديث",
+    "language": "اللغة",
+    "autoRemove": "الإزالة التلقائية عند المغادرة"
+  },
+  "alliances": {
+    "title": "التحالفات",
+    "name": "الاسم",
+    "tag": "الوسم",
+    "members": "الأعضاء",
+    "status": "الحالة",
+    "create": "إنشاء تحالف",
+    "edit": "تعديل",
+    "disable": "تعطيل",
+    "assignPlayer": "تعيين لاعب",
+    "removePlayer": "إزالة لاعب",
+    "setRank": "تحديد الرتبة",
+    "ranks": {
+      "r1": "R1 - القائد",
+      "r2": "R2 - نائب القائد",
+      "r3": "R3 - مسؤول",
+      "r4": "R4 - عضو مميز",
+      "r5": "R5 - عضو"
+    }
+  },
+  "allianceApi": {
+    "title": "API التحالف",
+    "provider": "المزود",
+    "health": "الحالة الصحية",
+    "lastSync": "آخر مزامنة",
+    "syncNow": "مزامنة الآن",
+    "syncHistory": "سجل المزامنة",
+    "rankHistory": "سجل الرتب",
+    "memberHistory": "سجل الأعضاء"
+  },
+  "reminders": {
+    "title": "التذكيرات",
+    "eventName": "اسم الحدث",
+    "eventTime": "وقت الحدث",
+    "offsets": "التنبيهات (دقائق)",
+    "timeMode": "وضع الوقت",
+    "gameTime": "وقت اللعبة",
+    "realTime": "الوقت الحقيقي",
+    "createBear": "تذكير دب",
+    "createEvent": "تذكير حدث",
+    "createCustom": "تذكير مخصص",
+    "sendTest": "إرسال اختبار",
+    "deliveries": "التسليمات"
+  },
+  "timeSettings": {
+    "title": "إعدادات الوقت",
+    "gameTimezone": "منطقة وقت اللعبة",
+    "realTimezone": "المنطقة الزمنية الحقيقية",
+    "displayTimezone": "منطقة العرض",
+    "defaultTimeMode": "الوضع الافتراضي",
+    "save": "حفظ"
+  },
+  "content": {
+    "title": "إدارة المحتوى",
+    "page": "الصفحة",
+    "language": "اللغة",
+    "edit": "تعديل",
+    "reset": "إعادة تعيين",
+    "preview": "معاينة",
+    "history": "السجل"
+  },
+  "admins": {
+    "title": "إدارة المدراء",
+    "admins": "المدراء",
+    "supervisors": "المشرفون",
+    "userId": "معرف المستخدم",
+    "role": "الرتبة",
+    "permissions": "الصلاحيات",
+    "add": "إضافة",
+    "remove": "إزالة",
+    "ownerProtected": "لا يمكن تعديل المالك"
+  },
+  "security": {
+    "title": "الأمان",
+    "incidents": "الحوادث",
+    "blockedInputs": "المدخلات المحظورة",
+    "accessDenials": "رفض الوصول",
+    "secretScan": "فحص الأسرار",
+    "securityScan": "فحص الأمان",
+    "integrityCheck": "فحص السلامة",
+    "runScan": "تشغيل الفحص"
+  },
+  "system": {
+    "title": "النظام",
+    "monitor": "المراقبة",
+    "health": "الصحة",
+    "watchdog": "الكلب الحراسي",
+    "diagnostics": "التشخيص",
+    "autopilot": "القيادة الذاتية",
+    "prediction": "التنبؤ",
+    "memory": "الذاكرة",
+    "disk": "القرص",
+    "database": "قاعدة البيانات"
+  },
+  "backups": {
+    "title": "النسخ الاحتياطية",
+    "create": "إنشاء نسخة",
+    "rollback": "التراجع",
+    "confirmRollback": "تأكيد التراجع؟",
+    "backupCreated": "تم إنشاء النسخة",
+    "rollbackSuccess": "تم التراجع بنجاح",
+    "noBackups": "لا توجد نسخ"
+  },
+  "updates": {
+    "title": "التحديثات",
+    "checkUpdates": "فحص التحديثات",
+    "updatePlan": "خطة التحديث",
+    "apply": "تطبيق",
+    "confirmApply": "تأكيد التطبيق؟",
+    "backupFirst": "سيتم إنشاء نسخة احتياطية أولاً",
+    "noUpdates": "لا توجد تحديثات"
+  },
+  "auditLogs": {
+    "title": "سجلات التدقيق",
+    "actor": "الممثل",
+    "action": "الإجراء",
+    "target": "الهدف",
+    "result": "النتيجة",
+    "riskLevel": "مستوى المخاطر",
+    "timestamp": "الوقت",
+    "filter": "تصفية",
+    "export": "تصدير"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "theme": "المظهر",
+    "notifications": "الإشعارات"
+  },
+  "common": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق",
+    "loading": "جاري التحميل...",
+    "noData": "لا توجد بيانات",
+    "success": "نجاح",
+    "error": "خطأ",
+    "warning": "تحذير",
+    "info": "معلومات"
+  }
+}

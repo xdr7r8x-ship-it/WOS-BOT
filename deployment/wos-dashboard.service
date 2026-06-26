@@ -1,0 +1,23 @@
+[Unit]
+Description=WOS-BOT Web Dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=wosbot
+Group=wosbot
+WorkingDirectory=/opt/wos-bot
+EnvironmentFile=/opt/wos-bot/.env
+ExecStart=/opt/wos-bot/.venv/bin/uvicorn src.web.backend.main:app --host 127.0.0.1 --port 8080
+
+Restart=always
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/wos-bot/db /opt/wos-bot/logs /opt/wos-bot/backups /opt/wos-bot/releases
+
+[Install]
+WantedBy=multi-user.target

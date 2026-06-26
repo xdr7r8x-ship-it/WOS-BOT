@@ -1,0 +1,228 @@
+{
+  "app": {
+    "title": "WOS-BOT Dashboard",
+    "loading": "Loading...",
+    "error": "An error occurred"
+  },
+  "auth": {
+    "login": "Login with Discord",
+    "logout": "Logout",
+    "welcome": "Welcome",
+    "accessDenied": "Access denied"
+  },
+  "nav": {
+    "overview": "Overview",
+    "giftCodes": "Gift Codes",
+    "players": "Players",
+    "playerPanel": "Player Panel",
+    "alliances": "Alliances",
+    "allianceApi": "Alliance API",
+    "reminders": "Reminders",
+    "timeSettings": "Time Settings",
+    "content": "Content",
+    "admins": "Admins",
+    "security": "Security",
+    "system": "System",
+    "backups": "Backups",
+    "updates": "Updates",
+    "auditLogs": "Audit Logs",
+    "settings": "Settings"
+  },
+  "overview": {
+    "title": "Overview",
+    "botStatus": "Bot Status",
+    "online": "Online",
+    "offline": "Offline",
+    "uptime": "Uptime",
+    "playersCount": "Players Count",
+    "activePlayers": "Active Players",
+    "giftCodesProcessed": "Codes Processed",
+    "queueSize": "Queue Size",
+    "activeAlliances": "Active Alliances",
+    "upcomingReminders": "Upcoming Reminders",
+    "securityStatus": "Security Status",
+    "databaseSize": "Database Size",
+    "latestAudit": "Latest Events"
+  },
+  "giftCodes": {
+    "title": "Gift Codes",
+    "submitCode": "Submit Code",
+    "code": "Code",
+    "status": "Status",
+    "pending": "Pending",
+    "processing": "Processing",
+    "completed": "Completed",
+    "failed": "Failed",
+    "queue": "Queue",
+    "processed": "Processed",
+    "success": "Success",
+    "retry": "Retry",
+    "redeem": "Redeem"
+  },
+  "players": {
+    "title": "Players",
+    "playerId": "Player ID",
+    "nickname": "Nickname",
+    "status": "Status",
+    "active": "Active",
+    "disabled": "Disabled",
+    "search": "Search...",
+    "disable": "Disable",
+    "enable": "Enable",
+    "stats": "Statistics"
+  },
+  "playerPanel": {
+    "title": "Player Panel",
+    "status": "Status",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "registerChannel": "Register Channel",
+    "registeredCount": "Registered Count",
+    "refresh": "Refresh",
+    "language": "Language",
+    "autoRemove": "Auto Remove on Leave"
+  },
+  "alliances": {
+    "title": "Alliances",
+    "name": "Name",
+    "tag": "Tag",
+    "members": "Members",
+    "status": "Status",
+    "create": "Create Alliance",
+    "edit": "Edit",
+    "disable": "Disable",
+    "assignPlayer": "Assign Player",
+    "removePlayer": "Remove Player",
+    "setRank": "Set Rank",
+    "ranks": {
+      "r1": "R1 - Leader",
+      "r2": "R2 - Co-Leader",
+      "r3": "R3 - Officer",
+      "r4": "R4 - Elite",
+      "r5": "R5 - Member"
+    }
+  },
+  "allianceApi": {
+    "title": "Alliance API",
+    "provider": "Provider",
+    "health": "Health Status",
+    "lastSync": "Last Sync",
+    "syncNow": "Sync Now",
+    "syncHistory": "Sync History",
+    "rankHistory": "Rank History",
+    "memberHistory": "Member History"
+  },
+  "reminders": {
+    "title": "Reminders",
+    "eventName": "Event Name",
+    "eventTime": "Event Time",
+    "offsets": "Offsets (minutes)",
+    "timeMode": "Time Mode",
+    "gameTime": "Game Time",
+    "realTime": "Real Time",
+    "createBear": "Bear Reminder",
+    "createEvent": "Event Reminder",
+    "createCustom": "Custom Reminder",
+    "sendTest": "Send Test",
+    "deliveries": "Deliveries"
+  },
+  "timeSettings": {
+    "title": "Time Settings",
+    "gameTimezone": "Game Timezone",
+    "realTimezone": "Real Timezone",
+    "displayTimezone": "Display Timezone",
+    "defaultTimeMode": "Default Time Mode",
+    "save": "Save"
+  },
+  "content": {
+    "title": "Content Management",
+    "page": "Page",
+    "language": "Language",
+    "edit": "Edit",
+    "reset": "Reset",
+    "preview": "Preview",
+    "history": "History"
+  },
+  "admins": {
+    "title": "Admin Management",
+    "admins": "Admins",
+    "supervisors": "Supervisors",
+    "userId": "User ID",
+    "role": "Role",
+    "permissions": "Permissions",
+    "add": "Add",
+    "remove": "Remove",
+    "ownerProtected": "Cannot modify owner"
+  },
+  "security": {
+    "title": "Security",
+    "incidents": "Incidents",
+    "blockedInputs": "Blocked Inputs",
+    "accessDenials": "Access Denials",
+    "secretScan": "Secret Scan",
+    "securityScan": "Security Scan",
+    "integrityCheck": "Integrity Check",
+    "runScan": "Run Scan"
+  },
+  "system": {
+    "title": "System",
+    "monitor": "Monitor",
+    "health": "Health",
+    "watchdog": "Watchdog",
+    "diagnostics": "Diagnostics",
+    "autopilot": "Autopilot",
+    "prediction": "Prediction",
+    "memory": "Memory",
+    "disk": "Disk",
+    "database": "Database"
+  },
+  "backups": {
+    "title": "Backups",
+    "create": "Create Backup",
+    "rollback": "Rollback",
+    "confirmRollback": "Confirm Rollback?",
+    "backupCreated": "Backup created",
+    "rollbackSuccess": "Rollback successful",
+    "noBackups": "No backups"
+  },
+  "updates": {
+    "title": "Updates",
+    "checkUpdates": "Check Updates",
+    "updatePlan": "Update Plan",
+    "apply": "Apply",
+    "confirmApply": "Confirm Apply?",
+    "backupFirst": "A backup will be created first",
+    "noUpdates": "No updates available"
+  },
+  "auditLogs": {
+    "title": "Audit Logs",
+    "actor": "Actor",
+    "action": "Action",
+    "target": "Target",
+    "result": "Result",
+    "riskLevel": "Risk Level",
+    "timestamp": "Timestamp",
+    "filter": "Filter",
+    "export": "Export"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "loading": "Loading...",
+    "noData": "No data",
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info"
+  }
+}

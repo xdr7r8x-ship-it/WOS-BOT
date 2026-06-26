@@ -1847,3 +1847,28 @@ init_reminder_tables()
 init_player_id_service_tables()
 init_feature_registry_tables()
 init_security_tables()
+
+def get_web_audit_logs(actor_id=None, action_like=None, limit=100, offset=0):
+    """Get web audit logs"""
+    with get_db() as conn:
+        conn.row_factory = sqlite3.Row
+        query = "SELECT * FROM web_audit_logs WHERE 1=1"
+        params = []
+        if actor_id:
+            query += " AND actor_id = ?"
+            params.append(actor_id)
+        if action_like:
+            query += " AND action LIKE ?"
+            params.append(f"%{action_like}%")
+        query += " ORDER BY created_at DESC LIMIT ? OFFSET ?"
+        params.extend([limit, offset])
+        return [dict(r) for r in conn.execute(query, params)]
+
+def enable_player(player_id):
+    """Enable a disabled player"""
+    with get_db() as conn:
+        conn.execute(
+            "UPDATE players SET disabled = 0 WHERE player_id = ?",
+            (player_id,)
+        )
+        return conn.total_changes > 0
