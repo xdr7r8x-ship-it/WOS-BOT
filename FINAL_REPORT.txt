@@ -13,22 +13,37 @@
 | Bot ready | ✅ Ready |
 | Dashboard ready | ✅ Ready |
 
-## Missing Only: Owner Secrets
+## Secrets Generated
 
 ```
-1. DISCORD_OAUTH_CLIENT_ID
-2. DISCORD_OAUTH_CLIENT_SECRET
-3. WOS_API_KEY
+PRIVATE_WOS_API_KEY_CREATED=true
+KEY_LOCATION=.env only
+WOS_API_KEY_VALUE_PRINTED=false
+WEB_SESSION_SECRET=auto_generated_on_vps
 ```
 
-## What's Working Without Secrets
+## System Configuration
+
+```
+GIFT_SYSTEM_STATUS=ENABLED_INTERNAL_QUEUE
+OAUTH_STATUS=WAITING_OWNER_CREDENTIALS
+```
+
+## Missing Only: OAuth Credentials
+
+```
+1. DISCORD_OAUTH_CLIENT_ID=required_from_owner
+2. DISCORD_OAUTH_CLIENT_SECRET=required_from_owner
+```
+
+## What's Working
 
 - ✅ Bot /wos command
 - ✅ Player ID self-service
 - ✅ Alliance management
 - ✅ Reminders
 - ✅ Security guards
-- ✅ Gift codes (DISABLED if no WOS_API_KEY)
+- ✅ Gift codes with internal queue
 - ✅ Web Dashboard backend
 - ✅ Web Dashboard frontend
 
@@ -54,8 +69,6 @@ sudo nginx -t && sudo systemctl reload nginx
 
 ## Owner Action Required
 
-Provide these secrets to enable full functionality:
+Provide Discord OAuth credentials to enable Web Dashboard login.
 
-1. Discord OAuth App credentials
-2. WOS API Key (optional - for gift redemption)
-3. Domain with SSL (optional - for HTTPS)
+## FINAL_STATUS=READY_FOR_VPS_DEPLOYMENT
