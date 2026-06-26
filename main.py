@@ -70,7 +70,7 @@ intents.message_content = True
 intents.guilds = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-tree = app_commands.CommandTree(bot)
+tree = bot.tree
 
 SAFE_ALLOWED_MENTIONS = discord.AllowedMentions.none()
 
