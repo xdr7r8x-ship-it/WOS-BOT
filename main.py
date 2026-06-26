@@ -24,7 +24,6 @@ from database import (
     code_exists_in_processed,
     get_code_by_hash,
     get_processed_code,
-    get_player,
     log_system,
     save_system_state,
     get_backups,

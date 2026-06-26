@@ -82,19 +82,19 @@ class MainView(ui.View):
             style=discord.ButtonStyle.gray,
             label=t("language.button", self.lang),
             custom_id="wos:language:open",
-            row=5
+            row=4
         ))
         
         self.add_item(ui.Button(
             style=discord.ButtonStyle.secondary,
             label="⏰ " + t("reminder.title", self.lang),
             custom_id="wos:reminder:open",
-            row=6
+            row=4
         ))
         
         self.add_item(ui.Button(
             style=discord.ButtonStyle.secondary,
             label="🔑 " + t("player_id.title", self.lang),
             custom_id="wos:player_id:open",
-            row=6
+            row=4
         ))
